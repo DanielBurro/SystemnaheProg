@@ -6,7 +6,7 @@
  newline: .asciz "\n"
 
 .align 2
-a: .word 1, 99, 3, 144, 35, 44, 7, -558, 9, 0, -55
+a: .word -99, -3, -144, -35, -44, -7, -558, -9, -55, -2
 a_end:
 
 #
@@ -21,8 +21,8 @@ main:
     la a2, a_end        # Speicheradresse von Array a_end wird in a2 geladen
 
     # --- Länge von a bestimmen ---
-    # a_end ist direkt hinter a
-    sub a2, a2, a1     # (length) Speicheradresse a_end - a: (Länge von a) * 4 
+    # a_end ist direkt hinter a (!!! Offset begint bei 0, desegen -4)
+    sub a2, a2, a1     # (length) Speicheradresse a_end - a: (Länge von * 4) - 4
 
     # --- Unterprogrammaufruf: maximum(int[] a, int length) ---
     jal maximum        # return a0
@@ -49,7 +49,7 @@ maximum:
     lw a0, 0(a1)       # a0 = tmp (höchste Zahl) = a[i]
 
 loop_cond:
-    bgt t0, a2, end    # Wenn i > length, springe zum Ende
+    beq t0, a2, end    # Wenn i == length, springe zum Ende
 
 ### Schleifenrumpf
     lw t1, 0(a1)       # Lade a[i] in t1
@@ -64,5 +64,3 @@ falsch:
 
 end:
     jr ra              # Springt zurück zum Aufruf mit a0 als output (return tmp)
-    
-
