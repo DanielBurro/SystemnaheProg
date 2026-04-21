@@ -78,7 +78,7 @@ end:
     ecall
 
     # newline
-    li a7, 4    # Code 5 für print_string laden
+    li a7, 4    # Code 4 für print_string laden
     la a0, newline
     ecall
 
