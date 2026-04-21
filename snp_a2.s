@@ -41,7 +41,7 @@ while_loop:
 
     # Array-Werte laden
     lw t3, 0(t2)    # Lade a[i] in t3
-    lw t4, 4(t2)    # Lade a[i] in t4 (4 Byte Offset für das nächste Wort)
+    lw t4, 4(t2)    # Lade a[i+1] in t4 (4 Byte Offset für das nächste Wort)
 
     # tmp = (a[i] + a[i+1]) / 2
     add t5, t3, t4  # t5 = a[i] + a[i+1]
