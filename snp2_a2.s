@@ -20,7 +20,7 @@ n: .word 3
 main:
     # --- Daten laden ---
     la t0, consta           # Adresse von consta in t0 laden
-    flw fa1, 0(t0)          # Wert von consta in fa1 laden
+    flw fa0, 0(t0)          # Wert von consta in fa0 laden
 
     la t0, n                # Basisadresse von n in t0 laden
     lw a0, 0(t0)            # (Index) Wert von n in a0 laden 
@@ -50,20 +50,20 @@ heron:
     flw ft0, 0(t0)          # Wert von const2 in ft0 laden
 
     # --- Initialisierung von x_0 ---
-    fdiv.s fa0, fa1, ft0    # fa0 (x_n) = fa1 (a) / ft0 (const2)
-
+    fdiv.s fa1, fa0, ft0    # fa1 (x_n) = fa0 (a) / ft0 (const2)
 loop_cond:
     beq a0, zero, end       # Wenn a0 (Index) = 0, springe zum Ende
 
 ### Schleifenrumpf
     # --- Formel anwenden ---
     # x_{n+1} = (x_n + (a / x_n)) / 2
-    fdiv.s ft2, fa1, fa0    # (1.) a [fa1] / x_n [fa0]
-    fadd.s ft2, fa0, ft2    # (2.) x_n [fa0] + (a / x_n) [ft2]
-    fdiv.s fa0, ft2, ft0    # (3.) x_{n+1} [fa0] = (x_n + (a / x_n)) [ft2] / 2 [ft0]
+    fdiv.s ft2, fa0, fa1    # (1.) a [fa0] / x_n [fa1]
+    fadd.s ft2, fa1, ft2    # (2.) x_n [fa1] + (a / x_n) [ft2]
+    fdiv.s fa1, ft2, ft0    # (3.) x_{n+1} [fa1] = (x_n + (a / x_n)) [ft2] / 2 [ft0]
 
     addi a0, a0, -1         # a0 = a0 - 1
     j loop_cond             # Springe zurück zum Schleifenanfang
 
 end:
+    fmv.s fa0, fa1          # fa1 in fa0 verschieben, um Ergebnis als return zu geben
     jr ra                   # Springt zurück zum Aufruf mit fa0 als output
